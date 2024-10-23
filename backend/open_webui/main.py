@@ -2256,7 +2256,11 @@ async def oauth_callback(provider: str, request: Request, response: Response):
         raise HTTPException(404)
     client = oauth.create_client(provider)
     try:
-        token = await client.authorize_access_token(request)
+        token = (
+            await client.authorize_access_token(request, response_type=OAUTH_RESPONSE_TYPE.value)
+            if OAUTH_RESPONSE_TYPE.value
+            else await client.authorize_access_token(request)
+        )
     except Exception as e:
         log.warning(f"OAuth callback error: {e}")
         raise HTTPException(400, detail=ERROR_MESSAGES.INVALID_CRED)
