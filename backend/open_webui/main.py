@@ -75,6 +75,7 @@ from open_webui.config import (
     MODEL_FILTER_LIST,
     OAUTH_MERGE_ACCOUNTS_BY_EMAIL,
     OAUTH_PROVIDERS,
+    OAUTH_RESPONSE_TYPE,
     ENABLE_SEARCH_QUERY,
     SEARCH_QUERY_GENERATION_PROMPT_TEMPLATE,
     STATIC_DIR,
@@ -2237,6 +2238,9 @@ async def oauth_login(provider: str, request: Request):
     client = oauth.create_client(provider)
     if client is None:
         raise HTTPException(404)
+
+    if OAUTH_RESPONSE_TYPE.value:
+        return await client.authorize_redirect(request, redirect_uri, response_type=OAUTH_RESPONSE_TYPE.value)
     return await client.authorize_redirect(request, redirect_uri)
 
 

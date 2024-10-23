@@ -370,6 +370,12 @@ OAUTH_SCOPES = PersistentConfig(
     os.environ.get("OAUTH_SCOPES", "openid email profile"),
 )
 
+OAUTH_RESPONSE_TYPE = PersistentConfig(
+    "OAUTH_RESPONSE_TYPE",
+    "oauth.oidc.response_type",
+    os.environ.get("OAUTH_RESPONSE_TYPE", "code")
+)
+
 OAUTH_PROVIDER_NAME = PersistentConfig(
     "OAUTH_PROVIDER_NAME",
     "oauth.oidc.provider_name",
